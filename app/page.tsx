@@ -7,6 +7,8 @@ import { HomeSignedOut } from "./components/Home/HomeSignedOut";
 import { LayoutNavbar } from "./components/Navigation/LayoutNavbar";
 import { Footer } from "./components/Navigation/Footer";
 
+const getRandomPage = () => Math.floor(Math.random() * 500) + 1;
+
 export default function Page() {
   const [user, setUser] = useState<any>();
   const [movies, setMovies] = useState<any>();
@@ -14,12 +16,14 @@ export default function Page() {
 
   const fetchPopularMovies = async () => {
     try {
+      const moviePage = getRandomPage();
+      const tvPage = getRandomPage();
       const [movieResponse, tvResponse] = await Promise.all([
         fetch(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+          `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&page=${moviePage}`
         ),
         fetch(
-          `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+          `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&page=${tvPage}`
         ),
       ]);
       if (!movieResponse.ok || !tvResponse.ok) {

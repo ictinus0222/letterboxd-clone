@@ -20,6 +20,11 @@ const menuLinks = [
     name: "FILMS",
     href: "/films",
   },
+  {
+    id: 2,
+    name: "TV SHOWS",
+    href: "/tv",
+  },
   // {
   //   id: 2,
   //   name: "LISTS",

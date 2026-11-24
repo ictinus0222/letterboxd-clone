@@ -16,7 +16,7 @@ const UserNavbar = ({
     >
       <Image
         src={profilePic}
-        alt={userName}
+        alt={userName || "Profile picture"}
         width={24}
         height={24}
         className="max-h-[24px] max-w-[24px] rounded-full"

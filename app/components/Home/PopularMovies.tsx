@@ -4,16 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { mixPopularContent } from "app/content";
 
-export const PopularMovies = ({ movies }: { movies: any }) => {
+export const PopularMovies = ({
+  movies,
+  limit = 6,
+  title = "POPULAR ON LETTERBOXD",
+}: {
+  movies: any;
+  limit?: number;
+  title?: string;
+}) => {
   const path = usePathname();
+  const showMore = path !== "/films" && path !== "/tv";
 
   return (
     <>
       <div className="section-heading border-b-grey text-sh-grey mb-3 flex justify-between border-b border-solid text-xs">
         <p className="hover:text-hov-blue text-sm hover:cursor-pointer">
-          POPULAR ON CLONNERBOXD
+          {title}
         </p>{" "}
-        {!path.includes("films") && (
+        {showMore && (
           <Link
             href={"/films"}
             className="hover:text-hov-blue text-[11px] hover:cursor-pointer"
@@ -29,7 +38,8 @@ export const PopularMovies = ({ movies }: { movies: any }) => {
 
         {movies &&
           mixPopularContent(
-            movies.filter((movie) => !!movie.poster_path)
+            movies.filter((movie) => !!movie.poster_path),
+            limit
           ).map((movie) => (
             <PopularMoviePoster
               key={`${movie.media_type ?? "movie"}-${movie.id}`}

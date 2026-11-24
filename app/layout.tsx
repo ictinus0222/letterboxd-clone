@@ -5,7 +5,7 @@ import "./globals.css";
 import "./reset.css";
 
 export const metadata: Metadata = {
-  title: "Clonnerboxd • Social film discovery",
+  title: "Letterboxd • Social film discovery",
   description: "Letterboxd Clone by JanaIsCoding",
 };
 

@@ -9,7 +9,7 @@ export const UpgradeToPro = () => {
     >
       <span className="block text-lg font-bold">Find your next favorite</span>
       <span className="text-sh-grey mt-1 block text-sm">
-        Browse movies and series together on Clonnerboxd.
+        Browse movies and series together on Letterboxd.
       </span>
     </Link>
   );

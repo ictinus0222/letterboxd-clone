@@ -21,16 +21,21 @@ export const DropdownMobile = ({ userName, profilePic }) => {
     },
     {
       id: "3",
+      name: "TV Shows",
+      link: "/tv",
+    },
+    {
+      id: "4",
       name: "Members",
       link: "/members",
     },
     {
-      id: "4",
+      id: "5",
       name: "Reviews",
       link: "/reviews",
     },
     {
-      id: "5",
+      id: "6",
       name: "Messages",
       link: "/messages",
     },
@@ -46,7 +51,7 @@ export const DropdownMobile = ({ userName, profilePic }) => {
           <Link href={"/profile/" + auth.currentUser.uid}>
             <Image
               src={profilePic}
-              alt={userName}
+              alt={userName || "Profile picture"}
               width={24}
               height={24}
               className="rounded-xl"

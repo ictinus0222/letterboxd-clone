@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth } from "app/firebase/firebase";
 import Navbar from "./Navbar";
+import placeholder from "@/assets/sappling.jpg";
 
 export const LayoutNavbar = ({ newUserName }: { newUserName?: string }) => {
   const [user, setUser] = useState<any>();
@@ -28,7 +29,7 @@ export const LayoutNavbar = ({ newUserName }: { newUserName?: string }) => {
   return (
     <Navbar
       userName={newUserName || user?.displayName}
-      profilePic={user?.photoURL}
+      profilePic={user?.photoURL || placeholder}
       isLoggedIn={isLoggedIn}
       isTransparentNav={isTransparentNav}
     />

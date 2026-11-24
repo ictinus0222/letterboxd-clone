@@ -41,17 +41,9 @@ export const Footer = () => {
           </ul>
         </nav>
         <p className="text-sh-grey pb-3 text-xs">
-          © Clonnerboxd Limited. Made by{" "}
-          <a className="underline" href="https://github.com/JanaIsCoding">
-            JanaIsCoding
-          </a>
-          . Film data from{" "}
+          An Improved letterboxd Experience by Abhay Sharma. Film data from{" "}
           <a className="underline" href="https://www.themoviedb.org/">
             TMDb
-          </a>
-          . Inspired by{" "}
-          <a className="underline" href="https://letterboxd.com/">
-            Letterboxd
           </a>
         </p>
       </div>

@@ -1,5 +1,5 @@
 {
-  "name": "clonnerboxd-functions",
+  "name": "letterboxd-functions",
   "private": true,
   "main": "lib/index.js",
   "engines": {

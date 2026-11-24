@@ -17,7 +17,7 @@ export const ProfileReviews = ({
       <div className="mb-10 flex flex-col justify-between gap-2">
         {reviews.length === 0 ? (
           <p className=" text-sh-grey mx-2 pt-2 text-base">
-            This user hasn't reviewed any movies or series yet.
+            This user hasn&apos;t reviewed any movies or series yet.
           </p>
         ) : (
           reviews.map((review, i) =>

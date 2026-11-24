@@ -2,7 +2,13 @@ import Link from "next/link";
 import { PopularMoviePoster } from "../Home/PopularMoviePoster";
 import { contentHref, normalizeTmdbContent } from "app/content";
 
-export const FilterResults = ({ movies }: { movies: any[] }) => {
+export const FilterResults = ({
+  movies,
+  contentType,
+}: {
+  movies: any[];
+  contentType: "movie" | "tv";
+}) => {
   const contents = movies.map((movie) => ({
     movie,
     content: normalizeTmdbContent(movie),
@@ -12,7 +18,9 @@ export const FilterResults = ({ movies }: { movies: any[] }) => {
     <div className="w-full font-['Graphik'] md:mx-auto md:my-0 md:flex md:flex-row">
       <div className="flex w-full flex-col">
         <div className="section-heading mb-3 flex justify-between border-b border-solid border-b-grey text-xs text-sh-grey">
-          <div className="text-base">Movie &amp; TV results</div>
+          <div className="text-base">
+            {contentType === "movie" ? "Film results" : "TV show results"}
+          </div>
         </div>
 
         <div>

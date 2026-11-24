@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "clonnerboxd",
-    "starting": "clonnerboxd"
+    "default": "kraken-boxd",
+    "starting": "kraken-boxd"
   },
   "targets": {},
   "etags": {}

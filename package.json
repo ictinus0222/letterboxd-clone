@@ -9,7 +9,7 @@
     "@vercel/analytics": "^1.5.0",
     "firebase": "^9.21.0",
     "moment": "^2.30.1",
-    "next": "^15.2.0",
+    "next": "^15.5.29",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
@@ -22,10 +22,7 @@
     "test:rules": "firebase emulators:exec --only firestore \"vitest run tests/firestore.rules.test.ts\""
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["next/core-web-vitals"]
   },
   "browserslist": {
     "production": [
@@ -43,6 +40,7 @@
     "@firebase/rules-unit-testing": "^2.0.7",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.21.0",
+    "eslint-config-next": "^15.5.29",
     "firebase-tools": "^14.5.1",
     "postcss": "^8.5.3",
     "prettier": "^2.8.8",

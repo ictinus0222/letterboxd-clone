@@ -1,4 +1,4 @@
-# Clonnerboxd Cloud Functions
+# Letterboxd Cloud Functions
 
 The callable functions create trusted review publication transitions and manage verified-critic custom claims. Only an administrator with the Firebase Auth `admin: true` custom claim can call `setCriticVerification`. Establish that initial administrator claim through a trusted Firebase Admin operator process; do not make an admin-grant function callable by ordinary users or commit service-account credentials.
 

@@ -17,7 +17,7 @@ export const GetStarted = () => {
           <p>Tell your friends what’s good.</p>
         </div>
         <button className="md:text-l hover:bg-b-h-green sans-serif  bg-b-green mt-1 h-10 rounded px-5 text-sm text-[#fff] md:px-8 ">
-          GET STARTED - IT'S FREE!
+          GET STARTED - IT&apos;S FREE!
         </button>
 
         <div className="sans-serif  text-sh-grey my-2 flex flex-col  items-center gap-2 text-xs md:flex-row  md:text-base   md:text-xl">
