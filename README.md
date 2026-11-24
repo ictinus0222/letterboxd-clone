@@ -40,6 +40,10 @@ NEXT_PUBLIC_STORAGE_BUCKET = "your-firebase-storage-bucket"
 NEXT_PUBLIC_TMDB_API_KEY="your-TMDB-api-key"
 ```
 
+### Deploy with Firebase App Hosting
+
+Connect this repository to an App Hosting backend with the repository root as the app root. Configure the environment variables listed above in the backend's **Settings > Environment**. These `NEXT_PUBLIC_*` values are read during the build and need build-time availability. Keep their values out of the repository; `.env.local` is ignored by Git.
+
 ```
 npm run dev
 ```

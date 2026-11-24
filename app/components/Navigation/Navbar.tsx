@@ -90,16 +90,24 @@ const Navbar = ({ userName, profilePic, isLoggedIn, isTransparentNav }) => {
       <section className="align-center z-10 flex justify-between px-2 pl-4 md:mx-auto md:my-0 md:w-[950px]">
         {/* Logo Mobile */}
         <Link className="block self-center md:hidden" href="/">
-          <span className="block text-xl font-bold text-p-white">
-            Clonnerboxd
-          </span>
+          <Image
+            src="/letterboxd-logo.png"
+            width={230}
+            height={23}
+            className="w-[180px]"
+            alt="Letterboxd"
+          />
         </Link>
 
         {/* Logo Desktop */}
         <Link className="hidden self-center md:block" href="/">
-          <span className="block text-2xl font-bold text-p-white">
-            Clonnerboxd
-          </span>
+          <Image
+            src="/letterboxd-logo.png"
+            width={230}
+            height={23}
+            className="w-[230px]"
+            alt="Letterboxd"
+          />
         </Link>
         <div className="flex items-center">
           <nav className="z-20 mt-4 flex flex-col self-start">
