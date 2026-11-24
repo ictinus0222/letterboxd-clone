@@ -91,14 +91,14 @@ const Navbar = ({ userName, profilePic, isLoggedIn, isTransparentNav }) => {
         {/* Logo Mobile */}
         <Link className="block self-center md:hidden" href="/">
           <span className="block text-xl font-bold text-p-white">
-            Letterboxd
+            Clonnerboxd
           </span>
         </Link>
 
         {/* Logo Desktop */}
         <Link className="hidden self-center md:block" href="/">
           <span className="block text-2xl font-bold text-p-white">
-            Letterboxd
+            Clonnerboxd
           </span>
         </Link>
         <div className="flex items-center">
