@@ -14,8 +14,6 @@ import { SearchInputMobile } from "../Searching/SearchInputMobile";
 import openCloseMenu from "@/assets/menuopenclose.png";
 import searchIcon from "@/assets/searchIcon.png";
 import arrowDown from "@/assets/arrowdownprofile.png";
-import logo from "@/assets/kraken-boxd-logo.svg";
-import logoMobile from "@/assets/kraken-boxd-logo-mobile.svg";
 const menuLinks = [
   {
     id: 1,
@@ -92,24 +90,16 @@ const Navbar = ({ userName, profilePic, isLoggedIn, isTransparentNav }) => {
       <section className="align-center z-10 flex justify-between px-2 pl-4 md:mx-auto md:my-0 md:w-[950px]">
         {/* Logo Mobile */}
         <Link className="block self-center md:hidden" href="/">
-          <Image
-            src={logoMobile}
-            width={60}
-            height={42}
-            className="block md:hidden"
-            alt="Kraken-Boxd mobile logo"
-          />
+          <span className="block text-xl font-bold text-p-white">
+            Letterboxd
+          </span>
         </Link>
 
         {/* Logo Desktop */}
         <Link className="hidden self-center md:block" href="/">
-          <Image
-            src={logo}
-            width={200}
-            height={25}
-            className="hidden md:block"
-            alt="Kraken-Boxd logo"
-          />
+          <span className="block text-2xl font-bold text-p-white">
+            Letterboxd
+          </span>
         </Link>
         <div className="flex items-center">
           <nav className="z-20 mt-4 flex flex-col self-start">

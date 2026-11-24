@@ -1,4 +1,4 @@
-# Kraken-Boxd
+# Clonnerboxd - Letterboxd Clone
 
 ## Project's Scope
 
@@ -10,7 +10,7 @@
 ## Live Demo
 
 The existing public demo URL is retained until a new deployment hostname is configured:
-[Open Kraken-Boxd](https://clonnerboxd.vercel.app/).
+[Open Clonnerboxd](https://clonnerboxd.vercel.app/).
 
 ## Getting Started
 
@@ -73,4 +73,5 @@ npm run dev
 
 ## Sources, Materials, Copyright
 
+- This is a [Letterboxd](https://letterboxd.com/) website replica
 - API used: [The Movie Database](https://www.themoviedb.org/)

@@ -49,6 +49,22 @@ export function normalizeTmdbContent(
     : { ...metadata, contentType };
 }
 
+export function mixPopularContent<
+  T extends { id: number; media_type?: "movie" | "tv" },
+>(items: T[], limit = 6): T[] {
+  const movies = items.filter((item) => item.media_type !== "tv");
+  const shows = items.filter((item) => item.media_type === "tv");
+  const mixed: T[] = [];
+
+  for (let index = 0; mixed.length < limit; index += 1) {
+    if (movies[index]) mixed.push(movies[index]);
+    if (shows[index] && mixed.length < limit) mixed.push(shows[index]);
+    if (index >= movies.length && index >= shows.length) break;
+  }
+
+  return mixed;
+}
+
 export function contentHref(content: ContentReference): string {
   if (content.contentType === "movie") {
     return `/movie/${content.tmdbId}`;

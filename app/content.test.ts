@@ -3,6 +3,7 @@ import {
   contentHref,
   isValidReviewDimension,
   isValidReviewRating,
+  mixPopularContent,
   normalizeTmdbContent,
   normalizeUserCollections,
 } from "./content";
@@ -27,6 +28,30 @@ describe("content helpers", () => {
     expect(contentHref(movie)).toBe("/movie/12");
     expect(contentHref(series)).toBe("/tv/34");
     expect(series.title).toBe("Series");
+  });
+
+  it("mixes movies and TV shows in the homepage selection", () => {
+    const movies = [1, 2, 3, 4].map((id) => ({
+      id,
+      media_type: "movie" as const,
+    }));
+    const shows = [5, 6, 7, 8].map((id) => ({
+      id,
+      media_type: "tv" as const,
+    }));
+
+    expect(mixPopularContent([...movies, ...shows]).map(({ id }) => id)).toEqual([
+      1, 5, 2, 6, 3, 7,
+    ]);
+  });
+
+  it("fills the selection from the available type when the other is exhausted", () => {
+    const movies = [1, 2, 3].map((id) => ({
+      id,
+      media_type: "movie" as const,
+    }));
+
+    expect(mixPopularContent(movies).map(({ id }) => id)).toEqual([1, 2, 3]);
   });
 
   it("routes an episode through its series, season, and episode numbers", () => {

@@ -11,9 +11,11 @@ import { contentHref, normalizeTmdbContent } from "app/content";
 export const PopularMoviePoster = ({
   movie,
   compact = false,
+  showTypeLabel = false,
 }: {
   movie: any;
   compact?: boolean;
+  showTypeLabel?: boolean;
 }) => {
   const content = normalizeTmdbContent(movie);
   const contentId = String(content.tmdbId);
@@ -105,6 +107,11 @@ export const PopularMoviePoster = ({
             alt={content.title}
             className="rounded border object-cover"
           />
+          {showTypeLabel && (
+            <span className="absolute left-2 top-2 rounded bg-black/80 px-2 py-1 text-[10px] font-semibold text-white">
+              {content.contentType === "tv" ? "TV SHOW" : "MOVIE"}
+            </span>
+          )}
         </div>
       </Link>
 

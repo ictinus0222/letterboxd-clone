@@ -2,6 +2,7 @@ import React from "react";
 import { PopularMoviePoster } from "./PopularMoviePoster";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { mixPopularContent } from "app/content";
 
 export const PopularMovies = ({ movies }: { movies: any }) => {
   const path = usePathname();
@@ -10,7 +11,7 @@ export const PopularMovies = ({ movies }: { movies: any }) => {
     <>
       <div className="section-heading border-b-grey text-sh-grey mb-3 flex justify-between border-b border-solid text-xs">
         <p className="hover:text-hov-blue text-sm hover:cursor-pointer">
-          POPULAR ON KRAKEN-BOXD
+          POPULAR ON CLONNERBOXD
         </p>{" "}
         {!path.includes("films") && (
           <Link
@@ -27,12 +28,15 @@ export const PopularMovies = ({ movies }: { movies: any }) => {
           "No populars available at the moment. Please try again later."}
 
         {movies &&
-          movies
-            .filter((movie) => !!movie.poster_path)
-            .slice(0, 6)
-            .map((movie) => (
-              <PopularMoviePoster key={movie.id} movie={movie} />
-            ))}
+          mixPopularContent(
+            movies.filter((movie) => !!movie.poster_path)
+          ).map((movie) => (
+            <PopularMoviePoster
+              key={`${movie.media_type ?? "movie"}-${movie.id}`}
+              movie={movie}
+              showTypeLabel
+            />
+          ))}
       </div>
     </>
   );

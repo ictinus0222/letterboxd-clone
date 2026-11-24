@@ -41,7 +41,7 @@ export const SignInWithGoogle = () => {
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       name: auth.currentUser.displayName,
       uid: auth.currentUser.uid,
-      bio: "My movie watching journey on Kraken-Boxd.",
+      bio: "My movie watching journey, on clonnerboxd :)",
       photoUrl: auth.currentUser.photoURL,
       reviews: [],
       watched: [],
