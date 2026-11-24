@@ -6,6 +6,7 @@ import { WatchButton } from "../Buttons/WatchButton";
 import Link from "next/link";
 import { auth, db } from "app/firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { contentHref, normalizeTmdbContent } from "app/content";
 
 export const PopularMoviePoster = ({
   movie,
@@ -14,6 +15,8 @@ export const PopularMoviePoster = ({
   movie: any;
   compact?: boolean;
 }) => {
+  const content = normalizeTmdbContent(movie);
+  const contentId = String(content.tmdbId);
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -26,8 +29,15 @@ export const PopularMoviePoster = ({
     const userId = auth.currentUser.uid;
     const userDoc = await getDoc(doc(db, "users", userId));
 
-    const userFavs = userDoc?.data()?.favourites;
-    const isFavorite = userFavs.some((movies) => movies?.movieID === movie.id);
+    const userFavs = userDoc?.data()?.favourites ?? [];
+    const isFavorite = userFavs.some(
+      (saved) =>
+        (content.contentType === "movie" &&
+          saved?.movieID === contentId &&
+          !saved?.contentType) ||
+        (saved?.contentType === content.contentType &&
+          saved?.contentID === contentId)
+    );
     setIsFavourite(isFavorite);
   };
 
@@ -37,9 +47,14 @@ export const PopularMoviePoster = ({
     const userId = auth.currentUser.uid;
     const userDoc = await getDoc(doc(db, "users", userId));
 
-    const userWatched = userDoc?.data()?.watched;
+    const userWatched = userDoc?.data()?.watched ?? [];
     const isWatched = userWatched.some(
-      (movies) => movies?.movieID === movie.id
+      (saved) =>
+        (content.contentType === "movie" &&
+          saved?.movieID === contentId &&
+          !saved?.contentType) ||
+        (saved?.contentType === content.contentType &&
+          saved?.contentID === contentId)
     );
     setIsWatched(isWatched);
   };
@@ -82,12 +97,12 @@ export const PopularMoviePoster = ({
       }}
       key={movie.id}
     >
-      <Link href={"/movie/" + movie.id}>
+      <Link href={contentHref(content)}>
         <div className="relative h-full w-full">
           <Image
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             fill
-            alt={movie.title}
+            alt={content.title}
             className="rounded border object-cover"
           />
         </div>
@@ -100,15 +115,17 @@ export const PopularMoviePoster = ({
         >
           <FavouriteButton
             id={movie.id}
-            title={movie.title}
+            title={content.title}
             isFavourite={isFavourite}
             setIsFavourite={setIsFavourite}
+            contentType={content.contentType}
           />
           <WatchButton
             id={movie.id}
-            title={movie.title}
+            title={content.title}
             isWatched={isWatched}
             setIsWatched={setIsWatched}
+            contentType={content.contentType}
           />
         </div>
       )}

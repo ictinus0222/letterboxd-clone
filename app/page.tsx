@@ -13,18 +13,31 @@ export default function Page() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const fetchPopularMovies = async () => {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
-    );
+    try {
+      const [movieResponse, tvResponse] = await Promise.all([
+        fetch(
+          `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+        ),
+        fetch(
+          `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+        ),
+      ]);
+      if (!movieResponse.ok || !tvResponse.ok) {
+        throw new Error("Failed to load popular movies and TV.");
+      }
 
-    if (!res.ok) {
-      console.error("error fetching popular movies");
-      return;
+      const [movieData, tvData] = await Promise.all([
+        movieResponse.json(),
+        tvResponse.json(),
+      ]);
+      setMovies([
+        ...movieData.results.map((item: any) => ({ ...item, media_type: "movie" })),
+        ...tvData.results.map((item: any) => ({ ...item, media_type: "tv" })),
+      ]);
+    } catch (error) {
+      console.error("error fetching popular titles", error);
+      setMovies([]);
     }
-
-    const data = await res.json();
-
-    setMovies(data.results);
   };
 
   useEffect(() => {

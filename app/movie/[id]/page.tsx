@@ -5,7 +5,7 @@ import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import MovieSynopsis from "../../components/Movie/MovieSynopsis";
 import MoviePoster from "../../components/Movie/MoviePoster";
-import { MovieReviews } from "../../components/Movie/MovieReviews";
+import { ContentReviews } from "app/components/Review/ContentReviews";
 import { LayoutNavbar } from "app/components/Navigation/LayoutNavbar";
 import { Movie } from "app/types";
 import { Footer } from "app/components/Navigation/Footer";
@@ -57,7 +57,15 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             <MovieSynopsis movie={movie} />
           </div>
           <div className="flex items-center justify-center">
-            <MovieReviews movie={movie} />
+            <ContentReviews
+              content={{
+                contentType: "movie",
+                tmdbId: Number(movie.id),
+                title: movie.title,
+                poster_path: movie.poster_path,
+                backdrop_path: movie.backdrop_path,
+              }}
+            />
           </div>
         </div>
       </div>

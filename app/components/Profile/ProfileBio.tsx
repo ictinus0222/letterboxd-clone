@@ -37,6 +37,14 @@ export const ProfileBio = ({
                   EDIT PROFILE
                 </Link>
               )}
+              {!isAuthor && user.allowDirectMessages && (
+                <Link
+                  href={`/messages?to=${encodeURIComponent(user.uid)}`}
+                  className="sans-serif text-p-white rounded bg-[#567] px-3 py-2 text-xs font-bold"
+                >
+                  MESSAGE
+                </Link>
+              )}
             </div>
 
             <p className="sans-serif text-sh-grey hidden py-2 text-xs md:block">

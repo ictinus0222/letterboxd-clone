@@ -2,14 +2,28 @@
 
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { auth, db } from "app/firebase/firebase";
 import { ProfileBio } from "app/components/Profile/ProfileBio";
 import { LayoutNavbar } from "app/components/Navigation/LayoutNavbar";
 import { ProfileMoviesHighlight } from "app/components/Profile/ProfileMoviesHighlight";
 import { ProfileReviews } from "app/components/Profile/ProfileReviews";
-import { User, UserFavourite, UserReview, UserWatched } from "app/types";
+import {
+  ContentReview,
+  User,
+  UserFavourite,
+  UserReview,
+  UserWatched,
+} from "app/types";
 import { Footer } from "app/components/Navigation/Footer";
+import { normalizeUserCollections } from "app/content";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -19,6 +33,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [isAuthor, setIsAuthor] = useState(false);
 
   const [reviews, setReviews] = useState<UserReview[]>([]);
+  const [contentReviews, setContentReviews] = useState<ContentReview[]>([]);
   const [favourites, setFavourites] = useState<UserFavourite[]>([]);
   const [watched, setWatched] = useState<UserWatched[]>([]);
 
@@ -30,11 +45,28 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const userSnap = await getDoc(doc(db, "users", id));
     if (userSnap.exists()) {
       const user = userSnap.data() as User;
-      setUser(user);
+      const collections = normalizeUserCollections(user);
+      setUser({ ...user, ...collections });
 
-      setReviews(user.reviews.reverse().slice(0, 6));
-      setWatched(user.watched);
-      setFavourites(user.favourites);
+      setReviews([...collections.reviews].reverse().slice(0, 6));
+      setWatched(collections.watched);
+      setFavourites(collections.favourites);
+    }
+
+    try {
+      const publishedReviews = await getDocs(
+        query(
+          collection(db, "reviews"),
+          where("uid", "==", id),
+          where("status", "==", "published")
+        )
+      );
+      setContentReviews(
+        publishedReviews.docs.map((review) => review.data() as ContentReview)
+      );
+    } catch (error) {
+      console.error("Unable to load published profile reviews:", error);
+      setContentReviews([]);
     }
 
     setLoading(false);
@@ -45,8 +77,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     if (userSnap.exists()) {
       const user = userSnap.data() as User;
 
-      setWatched(user.watched);
-      setFavourites(user.favourites);
+      const collections = normalizeUserCollections(user);
+      setWatched(collections.watched);
+      setFavourites(collections.favourites);
     }
   };
 
@@ -92,7 +125,23 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               />
             </div>
 
-            {user.reviews && <ProfileReviews reviews={reviews} />}
+            {user.reviews && (
+              <ProfileReviews
+                reviews={[...contentReviews, ...reviews]
+                  .sort((a, b) => {
+                    const dateA =
+                      "content" in a
+                        ? a.publishedAt ?? a.createdAt
+                        : a.timestamp ?? "";
+                    const dateB =
+                      "content" in b
+                        ? b.publishedAt ?? b.createdAt
+                        : b.timestamp ?? "";
+                    return dateB.localeCompare(dateA);
+                  })
+                  .slice(0, 6)}
+              />
+            )}
           </div>
         </div>
       </div>

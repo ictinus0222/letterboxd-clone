@@ -5,6 +5,7 @@ import removeFavIcon from "./remFav.png";
 import Image from "next/image";
 import { auth, db } from "../../firebase/firebase";
 import { createFavouritePopup, PopupAction } from "../../utils";
+import { ContentType } from "app/types";
 
 export const FavouriteButton = ({
   id,
@@ -12,12 +13,14 @@ export const FavouriteButton = ({
   isFavourite,
   setIsFavourite,
   onEvent,
+  contentType = "movie",
 }: {
   id: string;
   title: string;
   isFavourite: boolean;
   setIsFavourite: Dispatch<SetStateAction<boolean>>;
   onEvent?: () => void;
+  contentType?: ContentType;
 }) => {
   const onFavourite = async () => {
     onEvent && onEvent();
@@ -37,9 +40,13 @@ export const FavouriteButton = ({
 
     const userId = auth.currentUser.uid;
     const userRef = doc(db, "users", userId);
+    const favourite =
+      contentType === "movie"
+        ? { movieID: id }
+        : { contentType, contentID: id };
 
     await updateDoc(userRef, {
-      favourites: arrayUnion({ movieID: id }),
+      favourites: arrayUnion(favourite),
     }).then(() => {
       setIsFavourite(true);
       createFavouritePopup(title, PopupAction.FAVOURITE);
@@ -53,8 +60,12 @@ export const FavouriteButton = ({
 
     const userId = auth.currentUser.uid;
     const userRef = doc(db, "users", userId);
+    const favourite =
+      contentType === "movie"
+        ? { movieID: id }
+        : { contentType, contentID: id };
     await updateDoc(userRef, {
-      favourites: arrayRemove({ movieID: id }),
+      favourites: arrayRemove(favourite),
     }).then(() => {
       setIsFavourite(false);
       createFavouritePopup(title, PopupAction.REMOVED);
@@ -70,13 +81,13 @@ export const FavouriteButton = ({
           height={20}
           alt={
             isFavourite
-              ? "Remove movie from favorites icon"
-              : "Add movie to favorites icon"
+              ? `Remove ${contentType} from favorites icon`
+              : `Add ${contentType} to favorites icon`
           }
           aria-label={
             isFavourite
-              ? "Remove movie from favorites list"
-              : "Add movie to favorites list"
+              ? `Remove ${contentType} from favorites list`
+              : `Add ${contentType} to favorites list`
           }
         />
       </div>

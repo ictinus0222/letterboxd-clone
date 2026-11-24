@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { LayoutNavbar } from "app/components/Navigation/LayoutNavbar";
 import { db } from "app/firebase/firebase";
 import { Review } from "app/types";
@@ -11,6 +11,8 @@ import { MovieReviewCompact } from "app/components/Review/MovieReviewCompact";
 import Link from "next/link";
 import Image from "next/image";
 import { SkeletonLoaderReview } from "app/components/Review/SkeletonLoaderReview";
+import { ContentReview } from "app/types";
+import { ContentReviewCard } from "app/components/Review/ContentReviewCard";
 
 // @to-do infinite scrolling
 // @to-do sort by user, movie, etc..
@@ -24,12 +26,21 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [allReviews, setAllReviews] = useState<Review[]>([]);
+  const [contentReviews, setContentReviews] = useState<ContentReview[]>([]);
 
   const fetchAllReviews = async () => {
-    const movieDocs = await getDocs(collection(db, "movies"));
+    const [movieDocs, publishedReviewDocs] = await Promise.all([
+      getDocs(collection(db, "movies")),
+      getDocs(
+        query(collection(db, "reviews"), where("status", "==", "published"))
+      ),
+    ]);
     const reviews = movieDocs.docs.flatMap(
       (doc) => doc.data().reviews
     ) as Review[];
+    setContentReviews(
+      publishedReviewDocs.docs.map((review) => review.data() as ContentReview)
+    );
 
     const sorted = reviews.sort(
       (a, b) => toDate(b?.timestamp).getTime() - toDate(a?.timestamp).getTime()
@@ -129,12 +140,12 @@ export default function Page() {
       <div className="site-body pt-5">
         <div className="flex min-h-[80vh] flex-col px-4 font-['Graphik'] md:mx-auto md:my-0 md:w-[950px]">
           <div className="border-b-grey text-sh-grey mb-3 flex justify-between border-b border-solid text-sm">
-            <p>REVIEWS OF CLONNERBOXD</p>
+            <p>REVIEWS ON KRAKEN-BOXD</p>
 
             {isLoading && <p className="text-sh-grey text-base">Loading...</p>}
             {!isLoading && (
               <p className="text-sh-grey text-base">
-                {allReviews.length} total reviews
+                {allReviews.length + contentReviews.length} total reviews
               </p>
             )}
           </div>
@@ -149,6 +160,10 @@ export default function Page() {
           )}
 
           {!isLoading && !reviews.length && <p>No reviews yet, go post one!</p>}
+
+          {!isLoading && contentReviews.map((review) => (
+            <ContentReviewCard key={review.id} review={review} />
+          ))}
 
           {!isLoading && reviews.length && (
             <div className="infinite-scroll">

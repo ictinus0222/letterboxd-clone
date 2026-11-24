@@ -14,11 +14,11 @@ export const IntroMessage = ({ user }: { user: any }) => {
         </Link>
         .{" "}
         <span className="hidden pb-2 md:inline-block">
-          Start your movie tracking journey now!
+          Start your movie and TV tracking journey now!
         </span>
       </div>
       <p className="text-h-grey mb-8 text-center text-lg md:mb-8">
-        On Clonnerboxd you can...{" "}
+        On Kraken-Boxd you can...{" "}
         <Link
           href={"/profile/" + user.uid}
           className="text-p-white hover:text-hov-blue"
@@ -31,7 +31,7 @@ export const IntroMessage = ({ user }: { user: any }) => {
         </Link>
         {" | "}
         <Link href="/films" className="text-p-white hover:text-hov-blue">
-          Filter movies based on your criteria
+          Discover movies and TV by your criteria
         </Link>
         {" | "}
         <Link href="/reviews" className="text-p-white hover:text-hov-blue">
@@ -40,7 +40,7 @@ export const IntroMessage = ({ user }: { user: any }) => {
         <span className="text-h-grey">
           {" "}
           or press the search icon in the header, and leave a review to your
-          favorite movie!
+          favorite movie or series!
         </span>
       </p>
     </>

@@ -12,7 +12,7 @@ export const GetStarted = () => {
 
       <div className="relative z-40 mt-[5%] flex flex-col items-center gap-2 md:mt-[-15%]">
         <div className="gradient-helper-mobile text-center text-2xl font-bold text-[#fff] md:text-5xl">
-          <p>Track films you’ve watched.</p>
+          <p>Track movies and series you’ve watched.</p>
           <p>Save those you want to see.</p>
           <p>Tell your friends what’s good.</p>
         </div>
@@ -21,7 +21,7 @@ export const GetStarted = () => {
         </button>
 
         <div className="sans-serif  text-sh-grey my-2 flex flex-col  items-center gap-2 text-xs md:flex-row  md:text-base   md:text-xl">
-          <p>The social network for film lovers.</p>
+          <p>The social network for movie and TV lovers.</p>
           <p>Also available on iOS, Apple TV and Android</p>
         </div>
       </div>

@@ -20,12 +20,18 @@ export const ProfileMoviesHighlight = ({
   type: string;
   onEvent: () => void;
 }) => {
-  const [movieIds, setMovieIds] = useState<string[]>([]);
+  const [contentItems, setContentItems] = useState<
+    { id: string; contentType: "movie" | "tv" }[]
+  >([]);
 
   const getLatestMovies = (movies: UserFavourite[]) => {
-    const latestMovies = movies.slice(0, 4).map((movie) => movie.movieID);
+    const latestMovies: { id: string; contentType: "movie" | "tv" }[] =
+      movies.slice(0, 4).map((movie) => ({
+      id: movie.contentID ?? movie.movieID,
+      contentType: movie.contentType === "tv" ? "tv" : "movie",
+      }));
 
-    setMovieIds(latestMovies);
+    setContentItems(latestMovies);
   };
 
   useEffect(() => {
@@ -37,23 +43,24 @@ export const ProfileMoviesHighlight = ({
   return (
     <>
       <div className="align-start section-heading border-b-grey text-sh-grey  mb-2 flex  justify-between  border-b  border-solid text-xs md:min-w-[600px]">
-        <p>{type.toUpperCase()} FILMS</p>
+        <p>{type.toUpperCase()}</p>
         <p> SEE ALL</p>
       </div>
       <div className="mb-5 flex flex-wrap gap-1 md:flex-row">
-        {movieIds.length === 0 && (
+        {contentItems.length === 0 && (
           <p className="text-sh-grey pt-2 text-base">
-            This user has no {type} movies yet.
+            This user has no {type} titles yet.
           </p>
         )}
 
-        {movieIds.length > 0 &&
-          movieIds.map((id) => (
+        {contentItems.length > 0 &&
+          contentItems.map(({ id, contentType }) => (
             <ProfileMoviePoster
-              key={id}
+              key={`${contentType}-${id}`}
               watched={watched}
               favourites={favourites}
               movieId={id}
+              contentType={contentType}
               onEvent={onEvent}
             />
           ))}

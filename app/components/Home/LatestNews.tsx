@@ -30,8 +30,8 @@ export const LatestNews = () => {
             Mamma mia!
           </h1>
           <p className="text-sh-grey my-1.5 pl-3">
-            The Letterboxd crew celebrates Mother’s Day 2023 by asking our own
-            moms about their favorite films.
+            Find thoughtful picks for your next movie night, from community
+            favorites to new discoveries.
             <Link
               href="/journal"
               className="text-p-white hover:text-hov-blue text-[11px] font-bold"

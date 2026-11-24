@@ -14,8 +14,8 @@ import { SearchInputMobile } from "../Searching/SearchInputMobile";
 import openCloseMenu from "@/assets/menuopenclose.png";
 import searchIcon from "@/assets/searchIcon.png";
 import arrowDown from "@/assets/arrowdownprofile.png";
-import logo from "@/assets/logo.png";
-import logoMobile from "@/assets/logoMobile.png";
+import logo from "@/assets/kraken-boxd-logo.svg";
+import logoMobile from "@/assets/kraken-boxd-logo-mobile.svg";
 const menuLinks = [
   {
     id: 1,
@@ -36,6 +36,11 @@ const menuLinks = [
     id: 4,
     name: "REVIEWS",
     href: "/reviews",
+  },
+  {
+    id: 5,
+    name: "MESSAGES",
+    href: "/messages",
   },
 ];
 
@@ -92,7 +97,7 @@ const Navbar = ({ userName, profilePic, isLoggedIn, isTransparentNav }) => {
             width={60}
             height={42}
             className="block md:hidden"
-            alt="letterboxd mobile logo"
+            alt="Kraken-Boxd mobile logo"
           />
         </Link>
 
@@ -103,7 +108,7 @@ const Navbar = ({ userName, profilePic, isLoggedIn, isTransparentNav }) => {
             width={200}
             height={25}
             className="hidden md:block"
-            alt="clonnerboxd browser logo"
+            alt="Kraken-Boxd logo"
           />
         </Link>
         <div className="flex items-center">

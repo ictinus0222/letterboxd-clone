@@ -41,11 +41,12 @@ export const SignInWithGoogle = () => {
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       name: auth.currentUser.displayName,
       uid: auth.currentUser.uid,
-      bio: "My movie watching journey, on clonnerboxd :)",
+      bio: "My movie watching journey on Kraken-Boxd.",
       photoUrl: auth.currentUser.photoURL,
       reviews: [],
       watched: [],
       favourites: [],
+      allowDirectMessages: false,
     }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;

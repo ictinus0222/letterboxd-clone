@@ -1,21 +1,16 @@
-# ClonnerboxD - Letterboxd Clone
+# Kraken-Boxd
 
 ## Project's Scope
 
-- Fully responsive clone of a popular social movie tracking and reviewing platform
-- Search, save and review your favourite movies, fetched from The Movie Database ’s API
-- Implement Google Auth using BaaS Firebase Auth and store all users' information in Firestore DB
-- Live preview on [Vercel's Hosting](https://clonnerboxd.vercel.app/).
+- Responsive social discovery and review app for movies and TV
+- Combined TMDB search and browsing, watch tracking, half-star ratings, and reviews for movies, series, and episodes
+- Google authentication and user data in Firebase Auth and Firestore
+- Private review drafts, verified-critic scheduled publishing, and opt-in message requests
 
 ## Live Demo
 
-### On Browser
-
-![Gif preview of the Clonnerboxd](./assets/clonnerboxd-preview-desktop.gif)
-
-### On Mobile
-
-![Gif preview of the Clonnerboxd on mobile](./assets/clonnerboxd-mobile-preview.gif)
+The existing public demo URL is retained until a new deployment hostname is configured:
+[Open Kraken-Boxd](https://clonnerboxd.vercel.app/).
 
 ## Getting Started
 
@@ -31,7 +26,7 @@ npm install
 
 Get an API key from [TMDB](https://developer.themoviedb.org/reference/intro/getting-started)
 
-Create a new project from [Firebase Console](https://console.firebase.google.com/u/0/) and connect it
+Create a new project from [Firebase Console](https://console.firebase.google.com/u/0/) and connect it. Firestore rules and Firebase Cloud Functions are configured in this repository; review and test them with the Firebase Emulator Suite before deploying.
 
 Create a `.env` file at the root of the repository with the following values for the [firebase](https://firebase.google.com/docs/web/learn-more#config-object) and API key:
 
@@ -49,15 +44,17 @@ NEXT_PUBLIC_TMDB_API_KEY="your-TMDB-api-key"
 npm run dev
 ```
 
-## Project Details & Description
+## Product Features
 
-- On **Homepage** you can see the current popular movies, fetched from [The Movie Database](https://www.themoviedb.org/).
-- On **Profile** you can see what movies you liked and watched, as well as your most recent reviews.
-- On **Films** page you can filter by different browsing categories: years, ratings and genres!
+- On **Home** and **Films**, browse movies and TV titles together, or filter by media type.
+- On **TV series** pages, browse seasons and episodes; rate and review series and individual episodes.
+- On **Profile**, see saved titles, watched titles, and recent reviews.
+- On **Reviews**, browse published reviews across content types.
+- On **Messages**, opt in to message requests and accept requests before chatting.
+- Any member can keep private drafts; only verified critics can schedule publication.
 - On **Members** you can see all the currently registered users and their info. You can see their profiles as well.
-- On **Reviews** you can see all the reviews on the platform.
 - On **Settings** you can edit your display name and your bio (which will update your profile).
-- In the navbar you can **search** for any movie to add to your collection.
+- In the navbar you can **search** for movies and TV to add to your collection.
 
 # Built with
 
@@ -76,5 +73,4 @@ npm run dev
 
 ## Sources, Materials, Copyright
 
-- This is a [Letterboxd](https://letterboxd.com/) website replica
 - API used: [The Movie Database](https://www.themoviedb.org/)

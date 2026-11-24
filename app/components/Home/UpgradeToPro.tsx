@@ -1,34 +1,16 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 export const UpgradeToPro = () => {
-  let url =
-    "https://a.ltrbxd.com/resized/sm/upload/j8/gt/r8/ss/pro-950-0-950-0-0.png?k=bc62c7df04";
-  let mobileUrl =
-    "https://a.ltrbxd.com/sm/upload/1n/js/vs/bi/pro-mobile.png?k=8ce50124d8";
   return (
-    <>
-      <Link href="https://letterboxd.com/pro/?utm_medium=banner&utm_campaign=get-pro">
-        <Image
-          className="mb-8 block self-center md:hidden"
-          src={mobileUrl}
-          width={100}
-          height={100}
-          alt="upgrade to pro banner"
-          loading="lazy"
-        />
-      </Link>
-      <Link href="https://letterboxd.com/pro/?utm_medium=banner&utm_campaign=get-pro">
-        <Image
-          className="mb-8 hidden self-center md:block"
-          src={url}
-          alt="upgrade to pro banner"
-          height={100}
-          width={950}
-          loading="lazy"
-        />
-      </Link>
-    </>
+    <Link
+      href="/films"
+      className="bg-navigation-bg text-p-white mb-8 block rounded border border-[#345] p-5 text-center hover:border-hov-blue"
+    >
+      <span className="block text-lg font-bold">Find your next favorite</span>
+      <span className="text-sh-grey mt-1 block text-sm">
+        Browse movies and series together on Kraken-Boxd.
+      </span>
+    </Link>
   );
 };

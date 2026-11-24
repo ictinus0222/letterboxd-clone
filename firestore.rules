@@ -1,0 +1,148 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function owner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function userOptedIn(uid) {
+      return exists(/databases/$(database)/documents/users/$(uid))
+        && get(/databases/$(database)/documents/users/$(uid)).data.get('allowDirectMessages', false) == true;
+    }
+
+    function reviewFieldsValid(reviewId) {
+      let data = request.resource.data;
+      let dimensions = data.get('dimensions', {});
+      return data.keys().hasOnly([
+          'id', 'uid', 'userName', 'userURL', 'content', 'contentKey',
+          'review', 'rating', 'dimensions', 'status', 'createdAt',
+          'updatedAt', 'scheduledAt', 'publishedAt'
+        ])
+        && data.uid == request.auth.uid
+        && data.id == reviewId
+        && data.content is map
+        && data.content.contentType in ['movie', 'tv', 'episode']
+        && data.content.tmdbId is int
+        && data.contentKey is string
+        && data.review is string
+        && data.review.size() > 0
+        && data.review.size() <= 10000
+        && (!data.keys().hasAny(['rating'])
+          || ((data.rating is int || data.rating is float)
+            && data.rating >= 0.5
+            && data.rating <= 5
+            && data.rating * 2 % 1 == 0))
+        && dimensions is map
+        && dimensions.keys().hasOnly([
+          'story', 'craft', 'emotionalImpact', 'rewatchability'
+        ])
+        && (!dimensions.keys().hasAny(['story'])
+          || (dimensions.story is int && dimensions.story >= 0 && dimensions.story <= 5))
+        && (!dimensions.keys().hasAny(['craft'])
+          || (dimensions.craft is int && dimensions.craft >= 0 && dimensions.craft <= 5))
+        && (!dimensions.keys().hasAny(['emotionalImpact'])
+          || (dimensions.emotionalImpact is int && dimensions.emotionalImpact >= 0 && dimensions.emotionalImpact <= 5))
+        && (!dimensions.keys().hasAny(['rewatchability'])
+          || (dimensions.rewatchability is int && dimensions.rewatchability >= 0 && dimensions.rewatchability <= 5));
+    }
+
+    match /users/{uid} {
+      allow read: if true;
+      allow create: if owner(uid)
+        && !request.resource.data.keys().hasAny(['verifiedCritic', 'admin', 'role', 'isAdmin']);
+      allow update: if owner(uid)
+        && !request.resource.data.diff(resource.data).affectedKeys()
+          .hasAny(['verifiedCritic', 'admin', 'role', 'isAdmin']);
+      allow delete: if false;
+    }
+
+    match /movies/{movieId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /reviews/{reviewId} {
+      allow get: if (resource.data.status == 'published')
+        || (signedIn() && reviewId.matches('^' + request.auth.uid + '_.*$'))
+        || (signedIn() && resource.data.uid == request.auth.uid);
+      allow list: if resource.data.status == 'published'
+        || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create: if signedIn()
+        && reviewId.matches('^' + request.auth.uid + '_.*$')
+        && request.resource.data.status == 'draft'
+        && reviewFieldsValid(reviewId);
+      allow update: if signedIn()
+        && resource.data.uid == request.auth.uid
+        && resource.data.status == 'draft'
+        && request.resource.data.status == 'draft'
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.contentKey == resource.data.contentKey
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['userName', 'userURL', 'content', 'review', 'rating', 'dimensions', 'updatedAt'])
+        && reviewFieldsValid(reviewId);
+      allow delete: if signedIn()
+        && resource.data.uid == request.auth.uid
+        && resource.data.status in ['draft', 'published'];
+    }
+
+    match /conversations/{conversationId} {
+      allow read: if signedIn() && request.auth.uid in resource.data.participants;
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly([
+          'participants', 'senderId', 'recipientId', 'requestMessage',
+          'status', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.status == 'pending'
+        && request.resource.data.senderId == request.auth.uid
+        && request.resource.data.recipientId is string
+        && request.resource.data.recipientId != request.auth.uid
+        && request.resource.data.participants is list
+        && request.resource.data.participants.size() == 2
+        && request.resource.data.participants.hasAll([
+          request.auth.uid, request.resource.data.recipientId
+        ])
+        && request.resource.data.requestMessage is string
+        && request.resource.data.requestMessage.size() > 0
+        && request.resource.data.requestMessage.size() <= 2000
+        && userOptedIn(request.auth.uid)
+        && userOptedIn(request.resource.data.recipientId);
+      allow update: if signedIn()
+        && (
+          (resource.data.status == 'pending'
+            && resource.data.recipientId == request.auth.uid
+            && request.resource.data.status in ['accepted', 'declined']
+            && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['status', 'updatedAt']))
+          || (resource.data.status == 'accepted'
+            && request.auth.uid in resource.data.participants
+            && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['updatedAt']))
+        );
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        function acceptedParticipant() {
+          let conversation = get(
+            /databases/$(database)/documents/conversations/$(conversationId)
+          );
+          return signedIn()
+            && request.auth.uid in conversation.data.participants
+            && conversation.data.status == 'accepted';
+        }
+
+        allow read: if acceptedParticipant();
+        allow create: if acceptedParticipant()
+          && request.resource.data.keys().hasOnly(['senderId', 'text', 'createdAt'])
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 5000;
+        allow update, delete: if false;
+      }
+    }
+  }
+}

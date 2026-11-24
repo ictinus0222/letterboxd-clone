@@ -23,7 +23,7 @@ export const SearchInputDesktop = () => {
   };
 
   const navigateToResults = () => {
-    router.push("/results?searchTerm=" + query);
+    router.push(`/results?${new URLSearchParams({ searchTerm: query })}`);
     setQuery("");
   };
 

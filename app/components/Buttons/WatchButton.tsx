@@ -6,6 +6,7 @@ import remWatched from "./remWatched.png";
 import Image from "next/image";
 import { auth, db } from "../../firebase/firebase";
 import { createWatchedPopup, PopupAction } from "../../utils";
+import { ContentType } from "app/types";
 
 export const WatchButton = ({
   id,
@@ -13,12 +14,14 @@ export const WatchButton = ({
   isWatched,
   setIsWatched,
   onEvent,
+  contentType = "movie",
 }: {
   id: string;
   title: string;
   isWatched: boolean;
   setIsWatched: Dispatch<React.SetStateAction<boolean>>;
   onEvent?: () => void;
+  contentType?: ContentType;
 }) => {
   const onWatched = async () => {
     onEvent && onEvent();
@@ -38,9 +41,13 @@ export const WatchButton = ({
 
     const userId = auth.currentUser.uid;
     const userRef = doc(db, "users", userId);
+    const watched =
+      contentType === "movie"
+        ? { movieID: id }
+        : { contentType, contentID: id };
 
     await updateDoc(userRef, {
-      watched: arrayUnion({ movieID: id }),
+      watched: arrayUnion(watched),
     }).then(() => {
       setIsWatched(true);
       createWatchedPopup(title, PopupAction.WATCHED);
@@ -55,8 +62,12 @@ export const WatchButton = ({
 
     const userId = auth.currentUser.uid;
     const userRef = doc(db, "users", userId);
+    const watched =
+      contentType === "movie"
+        ? { movieID: id }
+        : { contentType, contentID: id };
     await updateDoc(userRef, {
-      watched: arrayRemove({ movieID: id }),
+      watched: arrayRemove(watched),
     }).then(() => {
       setIsWatched(false);
       createWatchedPopup(title, PopupAction.REMOVED);
@@ -72,13 +83,13 @@ export const WatchButton = ({
           height={20}
           alt={
             isWatched
-              ? "Remove movie from watched icon"
-              : "Add movie to watched icon"
+              ? `Remove ${contentType} from watched icon`
+              : `Add ${contentType} to watched icon`
           }
           aria-label={
             isWatched
-              ? "Remove movie from watched list"
-              : "Add movie to watched list"
+              ? `Remove ${contentType} from watched list`
+              : `Add ${contentType} to watched list`
           }
         />
       </div>

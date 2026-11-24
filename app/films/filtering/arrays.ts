@@ -1,5 +1,9 @@
 const filterOptions = [
   {
+    title: "type",
+    values: ["Movies", "TV"],
+  },
+  {
     title: "years",
     values: [
       "2020s",

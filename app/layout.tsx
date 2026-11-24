@@ -5,8 +5,8 @@ import "./globals.css";
 import "./reset.css";
 
 export const metadata: Metadata = {
-  title: "Clonnerboxd • Social film discovery",
-  description: "Letterboxd Clone by JanaIsCoding",
+  title: "Kraken-Boxd • Movie and TV discovery",
+  description: "Discover, track, rate, and review movies and TV on Kraken-Boxd.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

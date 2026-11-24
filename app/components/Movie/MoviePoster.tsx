@@ -25,7 +25,7 @@ export default function MoviePoster({
     const userId = auth.currentUser.uid;
     const userDoc = await getDoc(doc(db, "users", userId));
 
-    const userFavs = userDoc?.data()?.favourites;
+    const userFavs = userDoc?.data()?.favourites ?? [];
     const isFavorite = userFavs.some((movies) => movies?.movieID === id);
     setIsFavourite(isFavorite);
   };
@@ -36,7 +36,7 @@ export default function MoviePoster({
     const userId = auth.currentUser.uid;
     const userDoc = await getDoc(doc(db, "users", userId));
 
-    const userWatched = userDoc?.data()?.watched;
+    const userWatched = userDoc?.data()?.watched ?? [];
     const isWatched = userWatched.some((movies) => movies?.movieID === id);
     setIsWatched(isWatched);
   };
