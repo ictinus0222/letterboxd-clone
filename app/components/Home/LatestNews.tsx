@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 export const LatestNews = () => {
@@ -32,13 +31,13 @@ export const LatestNews = () => {
           <p className="text-sh-grey my-1.5 pl-3">
             Find thoughtful picks for your next movie night, from community
             favorites to new discoveries.
-            <Link
-              href="/journal"
+            <a
+              href="https://letterboxd.com/journal/"
               className="text-p-white hover:text-hov-blue text-[11px] font-bold"
             >
               {" "}
               READ MORE
-            </Link>
+            </a>
           </p>
         </div>
       </div>
