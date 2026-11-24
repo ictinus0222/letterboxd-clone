@@ -7,7 +7,7 @@ export const FilterResults = ({
   contentType,
 }: {
   movies: any[];
-  contentType: "movie" | "tv";
+  contentType: "all" | "movie" | "tv";
 }) => {
   const contents = movies.map((movie) => ({
     movie,
@@ -19,7 +19,11 @@ export const FilterResults = ({
       <div className="flex w-full flex-col">
         <div className="section-heading mb-3 flex justify-between border-b border-solid border-b-grey text-xs text-sh-grey">
           <div className="text-base">
-            {contentType === "movie" ? "Film results" : "TV show results"}
+            {contentType === "movie"
+              ? "Film results"
+              : contentType === "tv"
+                ? "TV show results"
+                : "Search results"}
           </div>
         </div>
 

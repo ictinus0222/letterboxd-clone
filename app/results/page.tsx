@@ -97,7 +97,10 @@ export default function Page({
                   </button>
                 ))}
               </div>
-              <FilterResults movies={filteredResults ?? []} />
+              <FilterResults
+                movies={filteredResults ?? []}
+                contentType={mediaType}
+              />
             </>
           )}
         </div>
